@@ -58,13 +58,21 @@ while True:
                 
             elif opc == 2:
                 print("Seleccionaste Dar usuario de baja")
-                # Aquí puedes poner la lógica para dar de baja un usuario
+                dniBaja = input("| Ingrese DNI a dar de baja: ")
+                if dniBaja != dniLogged:
+                    darBajaUsuario(dniLogged, dniBaja)
+                else:
+                    print("No se puede eliminar a si mismo.")
             elif opc == 3:
                 print("Seleccionaste Modificar un usuario")
                 # Aquí puedes poner la lógica para modificar un usuario
             elif opc == 4:
                 print("Seleccionaste Consultar datos de un usuario")
-                # Aquí puedes poner la lógica para consultar datos de un usuario
+                dniConsulta = input("| Ingrese DNI a consultar: ")
+                if dniConsulta in diccionarioUsuarios:
+                    consultarDatosUsuario(dniLogged, dniConsulta)
+                else: 
+                    ("El DNI ingresado no existe en el sistema.")
             elif opc == 5:
                 print("Seleccionaste Cambiar de usuario")
                 # Aquí puedes poner la lógica para cambiar de usuario
