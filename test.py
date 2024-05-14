@@ -2,10 +2,7 @@ def programaPrincipal():
 
     diccionarioUsuarios = {}
     diccionarioDeAcciones = {}
-
     dniLogged = "1"
-
-
     #a
     def darAltaUsuario(dniLogged, dni, nombre, apellido):
         if dni in diccionarioUsuarios:
@@ -20,21 +17,40 @@ def programaPrincipal():
 
     #b
     def darBajaUsuario(dniLogged, dni):
-        del(diccionarioUsuarios[dni])
-        diccionarioDeAcciones[dniLogged] += ["BAJA"]
+        if dniLogged == dni:
+            print("No se puede eliminar a si mismo.")
+        else:
+            if dni in diccionarioUsuarios:
+                del(diccionarioUsuarios[dni])
+                if dniLogged in diccionarioDeAcciones:
+                    diccionarioDeAcciones[dniLogged] += ["BAJA"] 
+                else:
+                    diccionarioDeAcciones[dniLogged] = ["BAJA"]
+            else: 
+                print("El DNI indicado no existe en el sistema")
+            
 
 
     #c
     def modificarUsuario(dniLogged, dni, nombre, apellido):
         diccionarioUsuarios[dni] = [nombre, apellido]
-        diccionarioDeAcciones[dniLogged] += ["MODIFICAR"]
+        if dniLogged in diccionarioDeAcciones:
+            diccionarioDeAcciones[dniLogged] += ["MODIFICAR"]
+        else:
+            diccionarioDeAcciones[dniLogged] = ["MODIFICAR"]
 
     #d
     def consultarDatosUsuario(dniLogged, dni):
         print("Nombre:", diccionarioUsuarios[dni][0])
         print("Apellido:", diccionarioUsuarios[dni][1])
-        diccionarioDeAcciones[dniLogged] += ["CONSULTA"]
-        print(diccionarioDeAcciones[dniLogged])
+        if dniLogged in diccionarioDeAcciones:
+            diccionarioDeAcciones[dniLogged] += ["CONSULTA"]
+        else:
+            diccionarioDeAcciones[dniLogged] = ["CONSULTA"]
+        if not dni in diccionarioDeAcciones:
+            print("El usuario consultado no realizo acciones")
+        else:
+            print(diccionarioDeAcciones[dni])
 
     #e
     def cambiarUsuario(dni):
@@ -76,40 +92,61 @@ def programaPrincipal():
                     apellidoAlta = input("| Ingrese apellido: ")
 
                     if dniAlta in diccionarioUsuarios:
+                        print("-------------------------------")
                         print("DNI EXISTENTE EN EL DICCIONARIO")
+                        print("-------------------------------")
+                        print("")
                     else:
                         darAltaUsuario(dniLogged, dniAlta, nombreAlta, apellidoAlta)
                     
                 elif opc == 2:
                     print("Seleccionaste Dar usuario de baja")
                     dniBaja = input("| Ingrese DNI a dar de baja: ")
-                    if dniBaja != dniLogged:
-                        darBajaUsuario(dniLogged, dniBaja)
-                        print("Usuario eliminado correctamente")
+                    if dniBaja != dniLogged and dniBaja in diccionarioUsuarios:
+                            darBajaUsuario(dniLogged, dniBaja)
+                            print("-------------------------------")
+                            print("Usuario eliminado correctamente")
+                            print("-------------------------------")
+                            print("")
                     else:
-                        print("No se puede eliminar a si mismo.")
+                        print("No se puede eliminar a si mismo o no existe.")
                 elif opc == 3:
                     print("Seleccionaste Modificar un usuario")
-                    # Aquí puedes poner la lógica para modificar un usuario
+                    dniCambio = input("Ingrese DNI de usuario a modificar: ")
+                    nombreCambio = input("| Ingrese nuevo nombre: ")
+                    apellidoCambio = input("| Ingrese nuevo apellido: ")
+                    modificarUsuario(dniLogged, dniCambio, nombreCambio, apellidoCambio)
+                    print("-------------------------------")
+                    print("Usuario modificado con exitos!")
+                    print("-------------------------------")
+                    print("")
                 elif opc == 4:
                     print("Seleccionaste Consultar datos de un usuario")
                     dniConsulta = input("| Ingrese DNI a consultar: ")
-                    if dniConsulta in diccionarioUsuarios:
-                        consultarDatosUsuario(dniLogged, dniConsulta)
+                    if not dniConsulta in diccionarioUsuarios:
+                        print("-----------------------------------------")
+                        print("El DNI ingresado no existe en el sistema.")
+                        print("-----------------------------------------")
+                        print("")
                     else: 
-                        ("El DNI ingresado no existe en el sistema.")
+                        consultarDatosUsuario(dniLogged, dniConsulta)      
                 elif opc == 5:
                     print("Seleccionaste Cambiar de usuario")
                     dniCambio = input("| Ingrese DNI para cambio de sesion: ")
                     if dniCambio in diccionarioUsuarios:
                         dniLogged = dniCambio
                         cambiarUsuario(dniCambio)
-                    else: 
+                    else:
+                        print("------------------------------------")
                         print("El usuario no existe o fue eliminado")
+                        print("------------------------------------")
+                        print("")
             else:
                 print("Por favor, ingrese una opción válida (1-6).")
+                print("")
         else:
             print("Por favor, ingrese una opción válida (1-6).")
+            print("")
         
 
 programaPrincipal()
